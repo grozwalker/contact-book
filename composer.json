@@ -9,7 +9,8 @@
     "description": "Test framework",
     "license": "MIT",
     "require": {
-        "php": "^7.2"
+        "php": "^7.2",
+        "psr/http-message": "^1.0"
     },
     "require-dev": {
         "phpunit/phpunit": "^8.1"

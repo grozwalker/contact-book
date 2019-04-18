@@ -10,6 +10,8 @@ class ResponseTest extends TestCase
     {
         $response = new Response($body = 'testBody');
 
+        print_r($response->getBody());
+
         self::assertEquals($body, $response->getBody());
         self::assertEquals(200, $response->getStatusCode());
         self::assertEquals('OK', $response->getReasonPhrase());
@@ -33,8 +35,8 @@ class ResponseTest extends TestCase
             ->withHeader($name2 = 'Header 2', $value2 = 'Value 2');
 
         self::assertEquals([
-            $name1 => $value1,
-            $name2 => $value2
+            $name1 => [$value1],
+            $name2 => [$value2],
         ], $response->getHeaders());
     }
 }

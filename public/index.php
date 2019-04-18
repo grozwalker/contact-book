@@ -14,8 +14,8 @@ $response = (new Response("Hello, {$name}"))
     ->withHeader('Author', 'Andrey');
 
 header("HTTP/1.1 {$response->getStatusCode()} {$response->getReasonPhrase()}");
-foreach ($response->getHeaders() as $headerName => $headerValue) {
-    header("${headerName}: {$headerValue}");
+foreach ($response->getHeaders() as $headerName => $headerValues) {
+    header($headerName . ': ' . implode(', ', $headerValues));
 }
 
 echo $response->getBody();

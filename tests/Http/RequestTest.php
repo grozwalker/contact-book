@@ -8,7 +8,7 @@ class RequestTest extends TestCase
     /** @test */
     function request_has_empty_params(): void
     {
-        $request = new Request([]);
+        $request = new Request();
 
         self::assertEquals([], $request->getQueryParams());
         self::assertNull($request->getParsedBody());
