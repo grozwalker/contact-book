@@ -1,21 +1,18 @@
 <?php
 
-use \App\Http\RequestFactory;
-use App\Http\Response;
+use \Zend\HttpHandlerRunner\Emitter\SapiEmitter;
+use \Zend\Diactoros\ServerRequestFactory;
+use \Zend\Diactoros\Response\HtmlResponse;
 
 chdir(dirname(__DIR__));
 require 'vendor/autoload.php';
 
-$request = RequestFactory::createFromGlobals();
+$request = ServerRequestFactory::fromGlobals();
 
 $name = $request->getQueryParams()['name'] ?? 'Guest';
 
-$response = (new Response("Hello, {$name}"))
+$response = (new HtmlResponse("Hello, {$name}!"))
     ->withHeader('Author', 'Andrey');
 
-header("HTTP/1.1 {$response->getStatusCode()} {$response->getReasonPhrase()}");
-foreach ($response->getHeaders() as $headerName => $headerValues) {
-    header($headerName . ': ' . implode(', ', $headerValues));
-}
-
-echo $response->getBody();
+$emitter = new SapiEmitter();
+$emitter->emit($response);
