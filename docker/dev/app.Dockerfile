@@ -26,8 +26,7 @@ WORKDIR /var/www
 
 RUN pecl install \
     uopz \
-    xdebug \
-    pcntl
+    xdebug
 
 RUN docker-php-ext-enable \
     uopz \
@@ -38,8 +37,3 @@ RUN adduser --disabled-password --gecos "" docker-user && \
   echo "docker-user ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
 
 USER docker-user
-
-
-
-
-

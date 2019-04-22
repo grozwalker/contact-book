@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http;
+namespace App\Http\Router;
 
 class RouterCollection
 {
@@ -8,22 +8,22 @@ class RouterCollection
 
     public function get($name, $pattern, $handler, array $tokens = [])
     {
-        $this->routes = new Route($name, $pattern, $handler, ['GET'], $tokens);
+        $this->routes[] = new Route($name, $pattern, $handler, ['GET'], $tokens);
     }
 
     public function post($name, $pattern, $handler, array $tokens = [])
     {
-        $this->routes = new Route($name, $pattern, $handler, ['POST'], $tokens);
+        $this->routes[] = new Route($name, $pattern, $handler, ['POST'], $tokens);
     }
 
     public function put($name, $pattern, $handler, array $tokens = [])
     {
-        $this->routes = new Route($name, $pattern, $handler, ['PUT'], $tokens);
+        $this->routes[] = new Route($name, $pattern, $handler, ['PUT'], $tokens);
     }
 
     public function delete($name, $pattern, $handler, array $tokens = [])
     {
-        $this->routes = new Route($name, $pattern, $handler, ['DELETE'], $tokens);
+        $this->routes[] = new Route($name, $pattern, $handler, ['DELETE'], $tokens);
     }
 
     /**

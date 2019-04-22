@@ -2,11 +2,13 @@
 
 namespace test\HTTP;
 
-use App\Http\RouterCollection;
-use App\Http\Router;
-use App\Http\RequestNotMatchException;
+use App\Http\Router\Exceptions\RequestNotMatchedException;
+use App\Http\Router\Exceptions\RouteNotFountException;
+use App\Http\Router\RouterCollection;
+use App\Http\Router\Routes;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\RequestInterface;
+use Psr\Http\Message\ServerRequestInterface;
 use Zend\Diactoros\ServerRequest;
 use Zend\Diactoros\Uri;
 
@@ -20,7 +22,7 @@ class RouterTest extends TestCase
         $routers->get($nameGet = 'about', '/about', $handlerGet = 'get_handler');
         $routers->post($namePost = 'about_create', '/about', $handlerPost = 'post_handler');
 
-        $router = new Router($routers);
+        $router = new Routes($routers);
 
         $result = $router->match($this->buildRequest('GET', '/about'));
         self::assertEquals($nameGet, $result->getName());
@@ -39,36 +41,41 @@ class RouterTest extends TestCase
 
         $routers->get($nameGet = 'about', '/about', $handlerGet = 'get_handler');
 
-        $router = new Router($routers);
+        $router = new Routes($routers);
 
-        self::expectException(RequestNotMatchException::class);
+        self::expectException(RequestNotMatchedException::class);
         $router->match($this->buildRequest('POST', '/about'));
     }
 
-    /** @test */
+    /** @test
+     * @throws RequestNotMatchedException
+     */
     function router_can_has_attributes(): void
     {
         $routers = new RouterCollection();
 
-        $routers->get($name = 'contacts', '/contacts/2', 'handler', ['id' => '\d+']);
+        $routers->get($name = 'blog', '/blog/{id}', 'handler', ['id' => '\d+']);
 
-        $router = new Router($routers);
+        $router = new Routes($routers);
 
-        $result = $router->match($this->buildRequest('GET', '/about'));
+        $result = $router->match($this->buildRequest('GET', '/blog/2'));
+
         self::assertEquals($name, $result->getName());
         self::assertEquals(['id' => '2'], $result->getAttributes());
     }
 
-    /** @test */
+    /** @test
+     * @throws RequestNotMatchedException
+     */
     function exception_when_incorrect_attributes(): void
     {
         $routers = new RouterCollection();
 
         $routers->get($name = 'contacts', '/contacts/{id}', 'handler', ['id' => '\d+']);
 
-        $router = new Router($routers);
+        $router = new Routes($routers);
 
-        self::expectException(RequestNotMatchException::class);
+        self::expectException(RequestNotMatchedException::class);
         $router->match($this->buildRequest('GET', '/contact/slug'));
     }
 
@@ -80,10 +87,10 @@ class RouterTest extends TestCase
         $routers->get('contacts', '/contacts', 'handler');
         $routers->get('contacts_view', '/contacts/{id}', 'handler', ['id' => '\d+']);
 
-        $router = new Router($routers);
+        $router = new Routes($routers);
 
-        self::assertEquals('contacts', $router->generate('contacts'));
-        self::assertEquals('contacts/3', $router->generate('contacts_view', ['id' => '5']));
+        self::assertEquals('/contacts', $router->generate('contacts'));
+        self::assertEquals('/contacts/3', $router->generate('contacts_view', ['id' => '3']));
     }
 
     /** @test */
@@ -93,10 +100,10 @@ class RouterTest extends TestCase
 
         $routers->get($name = 'contacts', '/contacts/{id}', 'handler', ['id' => '\d+']);
 
-        $router = new Router($routers);
+        $router = new Routes($routers);
 
         self::expectException(\InvalidArgumentException::class);
-        $router->generate('contacts', ['id' => 'slug']);
+        $router->generate('contacts', ['slug' => '2']);
     }
 
     /**
@@ -104,7 +111,7 @@ class RouterTest extends TestCase
      * @param string $uri
      * @return RequestInterface
      */
-    private function buildRequest(string $method, string $uri): RequestInterface
+    private function buildRequest(string $method, string $uri): ServerRequestInterface
     {
         return (new ServerRequest())
             ->withMethod($method)

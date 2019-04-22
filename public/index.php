@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Router\RouterCollection;
 use Psr\Http\Message\ServerRequestInterface;
 use Zend\Diactoros\Response\JsonResponse;
 use \Zend\HttpHandlerRunner\Emitter\SapiEmitter;
@@ -13,21 +14,21 @@ $request = ServerRequestFactory::fromGlobals();
 
 $path = $request->getUri()->getPath();
 
+$routes = new RouterCollection();
+
+$routes->get('home', '/', )
+
 if ($path === '/') {
     $action = function (ServerRequestInterface $request) {
         $name = $request->getQueryParams()['name'] ?? 'Guest';
         return new HtmlResponse("Hello, {$name}!");
     };
-
-    $response = $action($request);
 }
 
 if ($path === '/about') {
     $action = function (ServerRequestInterface $request) {
         return new HtmlResponse("About!");
     };
-
-    $response = $action($request);
 }
 
 if ($path === '/blog') {
@@ -39,8 +40,6 @@ if ($path === '/blog') {
 
         return new JsonResponse($blog);
     };
-
-    $response = $action($request);
 }
 
 

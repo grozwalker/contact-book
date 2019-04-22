@@ -1,22 +1,16 @@
 <?php
 
-
-namespace App\Http;
-
+namespace App\Http\Router\Exceptions;
 
 use Psr\Http\Message\ServerRequestInterface;
 
-class RequestNotMatchException extends \LogicException
+class RequestNotMatchedException extends \Exception
 {
     private $request;
 
-    /**
-     * RequestNotMatchException constructor.
-     * @param ServerRequestInterface $request
-     */
     public function __construct(ServerRequestInterface $request)
     {
-        parent::__construct('Method Not Found');
+        parent::__construct('Matches not found.');
         $this->request = $request;
     }
 
