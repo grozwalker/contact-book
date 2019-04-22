@@ -1,6 +1,10 @@
 <?php
 
+use App\Http\Controllers\ContactController;
+use App\Http\Controllers\HomeController;
+use App\Http\Router\Exceptions\RequestNotMatchedException;
 use App\Http\Router\RouterCollection;
+use App\Http\Router\Router;
 use Psr\Http\Message\ServerRequestInterface;
 use Zend\Diactoros\Response\JsonResponse;
 use \Zend\HttpHandlerRunner\Emitter\SapiEmitter;
@@ -10,62 +14,30 @@ use \Zend\Diactoros\Response\HtmlResponse;
 chdir(dirname(__DIR__));
 require 'vendor/autoload.php';
 
-$request = ServerRequestFactory::fromGlobals();
-
-$path = $request->getUri()->getPath();
-
 $routes = new RouterCollection();
 
-$routes->get('home', '/', )
 
-if ($path === '/') {
-    $action = function (ServerRequestInterface $request) {
-        $name = $request->getQueryParams()['name'] ?? 'Guest';
-        return new HtmlResponse("Hello, {$name}!");
-    };
-}
+$routes->get('home', '/', [new HomeController(), 'index']);
+$routes->get('contact.view', '/contact/{id}', [new ContactController(), 'view'], ['id' => '\d+']);
 
-if ($path === '/about') {
-    $action = function (ServerRequestInterface $request) {
-        return new HtmlResponse("About!");
-    };
-}
+$router = new Router($routes);
+$request = ServerRequestFactory::fromGlobals();
+try {
+    $result = $router->match($request);
 
-if ($path === '/blog') {
-    $action = function (ServerRequestInterface $request) {
-        $blog = [
-            ['id' => 1, 'title' => 'First article'],
-            ['id' => 2, 'title' => 'Second article'],
-        ];
-
-        return new JsonResponse($blog);
-    };
-}
-
-
-if (preg_match('#^/blog/(?P<id>\d+)$#i', $path, $matches)) {
-    $id = $matches['id'];
-    $request = $request->withAttribute('id', $id);
-
-    $action = function (ServerRequestInterface $request) {
-        $id = $request->getAttribute('id');
-        if ($id > 5) {
-            return new JsonResponse(['error' => 'Undefined Page'], 404);
-        } else {
-            return new JsonResponse(['id' => $id, 'title' => 'Article #' . $id]);
-
+    if ($result) {
+        foreach ($attributes = $result->getAttributes() as $attribute => $value) {
+            $request = $request->withAttribute($attribute, $value);
         }
-    };
+
+        $action = $result->getHandler();
+
+        $response = $action($request);
+    }
+
+} catch (RequestNotMatchedException $exception) {
+    $response = new JsonResponse(['error' => 'Undefined Page'], 404);
 }
-
-if (isset($action)) {
-    $response = $action($request);
-} else {
-    $response = new JsonResponse(['error' => 'Undefined Page']);
-}
-
-$response = $response->withHeader('Author', 'Andrey');
-
 
 
 $emitter = new SapiEmitter();

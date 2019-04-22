@@ -2,32 +2,34 @@
 
 namespace App\Http\Router;
 
+use App\Http\Router\Route\RegexpRoute;
+
 class RouterCollection
 {
     private $routes = [];
 
     public function get($name, $pattern, $handler, array $tokens = [])
     {
-        $this->routes[] = new Route($name, $pattern, $handler, ['GET'], $tokens);
+        $this->routes[] = new RegexpRoute($name, $pattern, $handler, ['GET'], $tokens);
     }
 
     public function post($name, $pattern, $handler, array $tokens = [])
     {
-        $this->routes[] = new Route($name, $pattern, $handler, ['POST'], $tokens);
+        $this->routes[] = new RegexpRoute($name, $pattern, $handler, ['POST'], $tokens);
     }
 
     public function put($name, $pattern, $handler, array $tokens = [])
     {
-        $this->routes[] = new Route($name, $pattern, $handler, ['PUT'], $tokens);
+        $this->routes[] = new RegexpRoute($name, $pattern, $handler, ['PUT'], $tokens);
     }
 
     public function delete($name, $pattern, $handler, array $tokens = [])
     {
-        $this->routes[] = new Route($name, $pattern, $handler, ['DELETE'], $tokens);
+        $this->routes[] = new RegexpRoute($name, $pattern, $handler, ['DELETE'], $tokens);
     }
 
     /**
-     * @return Route[]
+     * @return RegexpRoute[]
      */
     public function getRoutes(): array
     {

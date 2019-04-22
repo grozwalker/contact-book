@@ -3,9 +3,8 @@
 namespace test\HTTP;
 
 use App\Http\Router\Exceptions\RequestNotMatchedException;
-use App\Http\Router\Exceptions\RouteNotFountException;
 use App\Http\Router\RouterCollection;
-use App\Http\Router\Routes;
+use App\Http\Router\Router;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -22,7 +21,7 @@ class RouterTest extends TestCase
         $routers->get($nameGet = 'about', '/about', $handlerGet = 'get_handler');
         $routers->post($namePost = 'about_create', '/about', $handlerPost = 'post_handler');
 
-        $router = new Routes($routers);
+        $router = new Router($routers);
 
         $result = $router->match($this->buildRequest('GET', '/about'));
         self::assertEquals($nameGet, $result->getName());
@@ -41,7 +40,7 @@ class RouterTest extends TestCase
 
         $routers->get($nameGet = 'about', '/about', $handlerGet = 'get_handler');
 
-        $router = new Routes($routers);
+        $router = new Router($routers);
 
         self::expectException(RequestNotMatchedException::class);
         $router->match($this->buildRequest('POST', '/about'));
@@ -56,7 +55,7 @@ class RouterTest extends TestCase
 
         $routers->get($name = 'blog', '/blog/{id}', 'handler', ['id' => '\d+']);
 
-        $router = new Routes($routers);
+        $router = new Router($routers);
 
         $result = $router->match($this->buildRequest('GET', '/blog/2'));
 
@@ -73,7 +72,7 @@ class RouterTest extends TestCase
 
         $routers->get($name = 'contacts', '/contacts/{id}', 'handler', ['id' => '\d+']);
 
-        $router = new Routes($routers);
+        $router = new Router($routers);
 
         self::expectException(RequestNotMatchedException::class);
         $router->match($this->buildRequest('GET', '/contact/slug'));
@@ -87,7 +86,7 @@ class RouterTest extends TestCase
         $routers->get('contacts', '/contacts', 'handler');
         $routers->get('contacts_view', '/contacts/{id}', 'handler', ['id' => '\d+']);
 
-        $router = new Routes($routers);
+        $router = new Router($routers);
 
         self::assertEquals('/contacts', $router->generate('contacts'));
         self::assertEquals('/contacts/3', $router->generate('contacts_view', ['id' => '3']));
@@ -100,7 +99,7 @@ class RouterTest extends TestCase
 
         $routers->get($name = 'contacts', '/contacts/{id}', 'handler', ['id' => '\d+']);
 
-        $router = new Routes($routers);
+        $router = new Router($routers);
 
         self::expectException(\InvalidArgumentException::class);
         $router->generate('contacts', ['slug' => '2']);
