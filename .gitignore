@@ -1,4 +1,4 @@
 /vendor/
 
-phpunit.xml
+phinx.yml
 .phpunit.result.cache
