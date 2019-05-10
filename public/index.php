@@ -1,44 +1,41 @@
 <?php
 
-use App\Http\Controllers\ContactController;
-use App\Http\Controllers\HomeController;
-use App\Http\Router\Exceptions\RequestNotMatchedException;
-use App\Http\Router\RouterCollection;
+use App\Application;
+use App\Http\Middleware\DispatchMiddleware;
+use App\Http\Middleware\ErrorHandlerMiddleware;
+use App\Http\Middleware\ProfilerMiddleware;
+use App\Http\Middleware\RouteMiddleware;
 use App\Http\Router\Router;
-use Psr\Http\Message\ServerRequestInterface;
-use Zend\Diactoros\Response\JsonResponse;
 use \Zend\HttpHandlerRunner\Emitter\SapiEmitter;
 use \Zend\Diactoros\ServerRequestFactory;
-use \Zend\Diactoros\Response\HtmlResponse;
 
 chdir(dirname(__DIR__));
 require 'vendor/autoload.php';
 
-$routes = new RouterCollection();
+$container = require 'config/container.php';
 
 
-$routes->get('home', '/', [new HomeController(), 'index']);
-$routes->get('contact.view', '/contact/{id}', [new ContactController(), 'view'], ['id' => '\d+']);
+### Running
 
-$router = new Router($routes);
 $request = ServerRequestFactory::fromGlobals();
-try {
-    $result = $router->match($request);
 
-    if ($result) {
-        foreach ($attributes = $result->getAttributes() as $attribute => $value) {
-            $request = $request->withAttribute($attribute, $value);
-        }
+/** @var Application $app */
+$app = $container->get(Application::class);
 
-        $action = $result->getHandler();
+/** @var Router $app */
+$router = $container->get(Router::class);
 
-        $response = $action($request);
-    }
+require 'config/pipelines.php';
 
-} catch (RequestNotMatchedException $exception) {
-    $response = new JsonResponse(['error' => 'Undefined Page'], 404);
-}
+$response = $app->handle($request);
 
+
+### Response
 
 $emitter = new SapiEmitter();
 $emitter->emit($response);
+
+//TODO
+/*
+ * Implement MiddlewareInterface
+ */

@@ -10,6 +10,11 @@ RUN apt-get -qq update &&  apt-get -qq install -y \
     libxml2-dev \
  && rm -rf /var/lib/apt/lists/*
 
+RUN  apt-get update && apt-get install && \
+     pecl install uopz xdebug-2.6.1 && \
+     docker-php-ext-enable uopz xdebug \
+  && rm -rf /var/lib/apt/lists/*
+
 RUN docker-php-ext-install \
     pdo \
     pdo_mysql \
@@ -20,18 +25,10 @@ RUN docker-php-ext-install \
     pcntl \
     soap
 
-
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin/ --filename=composer
 WORKDIR /var/www
 
-RUN pecl install \
-    uopz \
-    xdebug
-
-RUN docker-php-ext-enable \
-    uopz \
-    xdebug
-
+ADD config/php.ini /usr/local/etc/php/php.ini
 
 RUN adduser --disabled-password --gecos "" docker-user && \
   echo "docker-user ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
