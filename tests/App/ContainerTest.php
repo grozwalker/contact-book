@@ -90,6 +90,24 @@ class ContainerTest extends TestCase
     }
 
     /** @test */
+    public function reflection_construct()
+    {
+        $container = new Container();
+
+        $this::assertNotNull($first = $container->get(First::class));
+        $this::assertInstanceOf(First::class, $first);
+
+
+        $this::assertNotNull($second = $first->firstSub);
+        $this::assertInstanceOf(FirstSub::class, $second);
+
+
+        $this::assertNotNull($third = $second->secondSub);
+        $this::assertInstanceOf(SecondSub::class, $third);
+
+    }
+
+    /** @test */
     public function exception_when_params_not_found()
     {
         $container = new Container();
@@ -99,4 +117,31 @@ class ContainerTest extends TestCase
         $this::expectException(KeyNotFoundException::class);
         $container->get('error name');
     }
+
+
+}
+
+class First
+{
+    public $firstSub;
+
+    public function __construct(FirstSub $firstSub)
+    {
+        $this->firstSub = $firstSub;
+    }
+}
+
+class FirstSub
+{
+    public $secondSub;
+
+    public function __construct(SecondSub $secondSub)
+    {
+        $this->secondSub = $secondSub;
+    }
+}
+
+class SecondSub
+{
+
 }

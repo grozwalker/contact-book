@@ -2,14 +2,14 @@
 
 namespace App\Http\Pipeline;
 
-use App\Container\Container;
+use App\Container\ContainerInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
 class Resolver
 {
     private $container;
 
-    public function __construct(Container $container)
+    public function __construct(ContainerInterface $container)
     {
         $this->container = $container;
     }

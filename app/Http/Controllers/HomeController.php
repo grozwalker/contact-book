@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use PDO;
-use Psr\Http\Message\ServerRequestInterface;
 use Zend\Diactoros\Response\JsonResponse;
 
 class HomeController

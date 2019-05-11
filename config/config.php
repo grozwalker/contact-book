@@ -1,6 +1,6 @@
 <?php
 
 return [
-    'debug' => 'true',
+    'debug' => true,
     'db' => require 'config/db.php',
 ];

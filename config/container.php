@@ -2,9 +2,8 @@
 
 use App\Container\Container;
 
-$container = new Container();
-$container->set('config', require 'config/config.php');
+$settings = array_merge(['config' => require 'config/config.php'], require 'config/services.php');
 
-require 'config/services.php';
+$container = new Container($settings);
 
 return $container;

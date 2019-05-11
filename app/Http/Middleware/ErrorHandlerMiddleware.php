@@ -2,33 +2,32 @@
 
 namespace App\Http\Middleware;
 
-use App\Container\Container;
 use Psr\Http\Message\ServerRequestInterface;
+use Throwable;
 use Zend\Diactoros\Response\JsonResponse;
 
 class ErrorHandlerMiddleware
 {
     protected $debug;
 
-    public function __construct(Container $container)
+    public function __construct(bool $debug = false)
     {
-
-        $this->debug = $container->get('config')['debug'];
+        $this->debug = $debug;
     }
 
     public function __invoke(ServerRequestInterface $request, callable $next)
     {
         try {
             return $next($request);
-        } catch ( \Throwable $error ) {
+        } catch (Throwable $error) {
             if ($this->debug) {
                 return new JsonResponse([
                     'error' => 'Server error',
-                    'code'  => $error->getCode(),
+                    'code' => $error->getCode(),
                     'message' => $error->getMessage(),
                     'trace' => $error->getTrace(),
                 ],
-                500);
+                    500);
             } else {
                 return new JsonResponse('Server Error', 500);
             }
