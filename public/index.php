@@ -1,19 +1,18 @@
 <?php
 
 use App\Application;
-use App\Http\Middleware\DispatchMiddleware;
-use App\Http\Middleware\ErrorHandlerMiddleware;
-use App\Http\Middleware\ProfilerMiddleware;
-use App\Http\Middleware\RouteMiddleware;
 use App\Http\Router\Router;
+use App\Models\Database;
 use \Zend\HttpHandlerRunner\Emitter\SapiEmitter;
 use \Zend\Diactoros\ServerRequestFactory;
 
 chdir(dirname(__DIR__));
 require 'vendor/autoload.php';
 
-$container = require 'config/container.php';
 
+$db = new Database();
+
+$container = require 'config/container.php';
 
 ### Running
 
@@ -28,7 +27,6 @@ $router = $container->get(Router::class);
 require 'config/pipelines.php';
 
 $response = $app->handle($request);
-
 
 ### Response
 
