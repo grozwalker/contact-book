@@ -3,17 +3,11 @@ SHELL=/bin/bash -e
 #VARIABLES#
 project_name=spa
 
-
+project-install: up composer-install prepare-db npm-i build-front complete
 
 fresh-install: install clear-folder
 
-prepare-db: migrate seed
-
-prepare-app: composer-install env key-generate
-
-build-front: npm-i build-grunt copy-front
-
-build-front-fast: npm-i build-grunt copy-front
+prepare-db: phinx-env migrate seed
 
 install:
 	@docker exec -it ${project_name}_app_1  sh -c "composer create-project --prefer-dist laravel/laravel ./laravel"
@@ -28,10 +22,10 @@ start:
 	@docker-compose -f docker-compose.yml start
 
 migrate:
-	@docker-compose -f docker-compose.yml -p $project_name run app php artisan migrate --force
+	@docker-compose -f docker-compose.yml -p $project_name run app php vendor/bin/phinx migrate -e development
 
 seed:
-	@docker-compose -f docker-compose.yml -p $project_name run app php artisan db:seed --force
+	@docker-compose -f docker-compose.yml -p $project_name run app php vendor/bin/phinx seed:run
 
 logs:
 	@docker-compose -f docker-compose.yml -p $project_name logs --follow
@@ -51,23 +45,20 @@ ps:
 composer-install:
 	@docker exec -it ${project_name}_app_1 sh -c "composer install"
 
-env:
-	@docker exec -it ${project_name}_app_1  sh -c "cp .env.docker.example .env"
-
-key-generate:
-	@docker exec -it ${project_name}_app_1 sh -c "php artisan key:generate"
-
-db-fresh:
-	@docker exec -it ${project_name}_app_1 sh -c "php artisan migrate:fresh --seed --force"
+phinx-env:
+	@docker exec -it ${project_name}_app_1  sh -c "cp phinx.yml.example phinx.yml"
 
 npm-i:
 	@docker exec -it ${project_name}_node_1 sh -c "npm i"
 
-build-grunt:
-	@docker exec -it ${project_name}_node_1 sh -c "grunt build-fast"
+build-front:
+	@docker exec -it ${project_name}_node_1 sh -c "npm run build"
 
-copy-front:
-	@cp -r ./markup/build/res ./php/public
+develop-front:
+	@docker exec -it ${project_name}_node_1 sh -c "npm run serve"
+
+complete:
+	@echo -e "Completed! Visit http://localhost:8081"
 
 bash:
 	docker exec -it ${project_name}_app_1 bash

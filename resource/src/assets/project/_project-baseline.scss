@@ -1,0 +1,40 @@
+// Colors
+
+$text: $black-dark;
+$background: $black-lighter;
+
+$text-print: $text;
+$background-print: $background;
+
+
+
+// Fonts
+
+$serifFontStack: 'Roboto', Times, serif;
+$serifFontLight: 'Roboto Light', Times, serif;
+$serifFontMedium: 'Roboto Medium', Times, serif;
+$serifFontMono: 'Roboto Mono Medium', monospace;
+
+$font-serif: $serifFontStack;
+$font-serif-light: $serifFontLight;
+$font-serif-medium: $serifFontMedium;
+$font-serif-mono: $serifFontMono;
+
+$fontFamily: $font-serif;
+$fontSize: 16px;
+$lineHeight: 1.5;
+
+$fontSize-phone: 14px;
+
+
+
+
+// Typography
+
+$fontSizes: (
+
+);
+
+$UITransitionSlow:.7s;
+$UITransitionDefault:.5s;
+$UITransitionFast:.3s;

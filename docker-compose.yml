@@ -1,4 +1,5 @@
-version: "2"
+version: '3'
+
 services:
   db:
     build:
@@ -6,15 +7,16 @@ services:
       dockerfile: docker/dev/db.Dockerfile
     image: spa_db
     container_name: spa_db_1
+    command: mysqld --default-authentication-plugin=mysql_native_password
     environment:
-      MYSQL_USER: docker
       MYSQL_DATABASE: docker
+      MYSQL_USER: docker
       MYSQL_PASSWORD: secret
       MYSQL_ROOT_PASSWORD: secret
     ports:
-      - "33060:3306"
-    volumes:
-      - ./docker/dev/db:/mysql/data
+      - "33061:3306"
+    networks:
+      - spa-network
 
   web:
     build:
@@ -24,8 +26,25 @@ services:
     container_name: spa_web_1
     ports:
       - "8089:80"
-    volumes_from:
-    - app
+      - "8081:81"
+    volumes:
+      - ./:/var/www
+    networks:
+      - spa-network
+
+  app:
+    build:
+      context: docker/dev
+      dockerfile: app.Dockerfile
+    image: spa_app
+    container_name: spa_app_1
+    volumes:
+      - ./:/var/www
+    environment:
+      XDEBUG_CONFIG: "remote_host=192.168.220.1 remote_enable=1"
+      PHP_IDE_CONFIG: "serverName=Docker"
+    networks:
+      - spa-network
 
   node:
     build:
@@ -34,17 +53,24 @@ services:
     image: spa_node
     container_name: spa_node_1
     tty: true
+    ports:
+      - "3000:8080"
+      - "35729:35729"
     volumes:
       - ./:/var/www
+    networks:
+      - spa-network
 
-  app:
-    build:
-      context: ./
-      dockerfile: docker/dev/app.Dockerfile
-    image: spa_app
-    container_name: spa_app_1
-    volumes:
-    - ./:/var/www
-    #- ~/.ssh:/home/docker-user/.ssh -- pass your local ssh key
-    depends_on:
-      - db
+#Docker Networks
+networks:
+  spa-network:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 192.168.220.0/28
+
+#Volumes
+volumes:
+  dbdata:
+    driver: local

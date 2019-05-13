@@ -1,0 +1,6 @@
+/vendor/
+/node_modules
+/resource/dist
+
+phinx.yml
+.phpunit.result.cache

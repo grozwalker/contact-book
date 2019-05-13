@@ -1,0 +1,15 @@
+// Media Queries
+
+$breakpoints: (
+    desktopMin: 1024px,
+);
+
+$breakpointQueries: (
+    desktop: txf-breakpointQuery($min: desktopMin),
+    mobile: txf-breakpointQuery($max: desktopMin),
+);
+
+$mediaQueries: (
+    desktop: txf-deviceBreakpoint(desktop),
+    mobile: txf-deviceBreakpoint(mobile),
+);
