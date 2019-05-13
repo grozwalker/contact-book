@@ -6,8 +6,9 @@
 
 ## Project setup with `make`
 ```
-git clone git@github.com:grozwalker/contact-book.git
-make project-install
+> git clone git@github.com:grozwalker/contact-book.git
+> cd contact-book
+> make project-install
 ```
 Visit: http://localhost:8081
 
@@ -16,3 +17,7 @@ Visit: http://localhost:8081
 make develop-front
 ```
 Visit: http://localhost:3000
+
+Start server: `make up`
+
+Stop server: `make stop`
