@@ -3,16 +3,22 @@
 namespace App\Http\Controllers;
 
 use App\Repositories\UserRepository;
+use App\Services\SaveUserPhoneService;
 use Psr\Http\Message\ServerRequestInterface;
 use Zend\Diactoros\Response\JsonResponse;
 
-class ContactController
+class UserController
 {
     private $userRepository;
+    /**
+     * @var SaveUserPhoneService
+     */
+    private $saveUserPhoneService;
 
     public function __construct(UserRepository $userRepository)
     {
         $this->userRepository = $userRepository;
+        $this->saveUserPhoneService = $saveUserPhoneService;
     }
 
     public function index(ServerRequestInterface $request)
@@ -30,26 +36,27 @@ class ContactController
         return new JsonResponse($user);
     }
 
-    public function create(ServerRequestInterface $request)
+    public function store(ServerRequestInterface $request)
     {
-        $user = $this->userRepository->create($request);
+        $data = $request->getParsedBody();
+        $user = $this->userRepository->create($data);
 
-        return $user;
-    }
-
-    public function store()
-    {
-        
+        return new JsonResponse($user);
     }
 
     public function edit()
     {
-        
+
     }
 
-    public function update()
+    public function update(ServerRequestInterface $request)
     {
-        
+        $id = $request->getAttribute('id');
+        $data = $request->getParsedBody();
+
+        $user = $this->userRepository->update($id, $data);
+
+        return new JsonResponse($user);
     }
 
     public function destroy(ServerRequestInterface $request)

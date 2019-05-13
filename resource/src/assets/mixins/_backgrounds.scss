@@ -1,0 +1,69 @@
+@mixin background-opacity($color, $opacity: 0.3) {
+  background: $color; /* The Fallback */
+  background: rgba($color, $opacity);
+}
+
+@function getLine($color, $startPoint, $endPoint) {
+  @return unquote(join($color, $startPoint)  + ', ' + join($color, $endPoint));
+}
+
+@function getResultLine($line, $hasEndComma) {
+  @if $hasEndComma {
+    @return $line + ', ';
+  }
+
+  @return $line;
+}
+
+@function dashes-background($dashColor, $dashWidth, $spaceColor, $spaceWidth) {
+  $gradientColors: null;
+  $startPoint: 0;
+  $endPoint: 0;
+  $hasEndComma: true;
+  $maxIterationCount: 11;
+
+  @for $i from 0 through $maxIterationCount {
+    $line : null;
+
+    //Dash
+    @if ($i % 2 == 0) {
+      $startPoint: $endPoint;
+      $endPoint: $startPoint + $dashWidth;
+
+      $line: getLine($dashColor, $startPoint, $endPoint);
+    }
+      //Space
+    @else {
+      $startPoint: $endPoint;
+      $endPoint: $startPoint + $spaceWidth;
+
+      $line: getLine($spaceColor, $startPoint, $endPoint);
+    }
+
+    @if $i == $maxIterationCount {
+      $hasEndComma: false;
+    }
+
+    $gradientColors: join($gradientColors, getResultLine($line, $hasEndComma));
+
+  }
+
+  @return linear-gradient(to right, $gradientColors);
+
+  /*
+  linear-gradient(to right,
+    $dashColor 0, $dashColor 40px,
+    $spaceColor 40px,$spaceColor 48px,
+    $dashColor 48px, $dashColor 88px,
+    $spaceColor 88px,$spaceColor 96px,
+    $dashColor 96px, $dashColor 136px,
+    $spaceColor 136px,$spaceColor 144px,
+    $dashColor 144px, $dashColor 184px,
+    $spaceColor 184px,$spaceColor 192px,
+    $dashColor 192px, $dashColor 232px,
+    $spaceColor 232px,$spaceColor 240px,
+    $dashColor 240px, $dashColor 280px,
+    $spaceColor 280px
+  );
+  */
+}

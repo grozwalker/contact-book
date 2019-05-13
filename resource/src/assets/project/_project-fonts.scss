@@ -1,0 +1,53 @@
+@font-face {
+  font-family:'Roboto';
+  src: url('/fonts/Roboto/Roboto.eot');
+  src: url('/fonts/Roboto/Roboto.eot?#iefix') format('embedded-opentype'),
+  url('/fonts/Roboto/Roboto.woff2') format('woff2'),
+  url('/fonts/Roboto/Roboto.woff') format('woff'),
+  url('/fonts/Roboto/Roboto.ttf') format('truetype'),
+  url('/fonts/Roboto/Roboto.svg#Roboto') format('svg');
+  font-weight: 400;
+  font-style: normal;
+  font-stretch: normal;
+  unicode-range: U+0020-2044;
+}
+
+@font-face {
+  font-family:'Roboto Light';
+  src: url('/fonts/Roboto/Roboto Light.eot');
+  src: url('/fonts/Roboto/Roboto Light.eot?#iefix') format('embedded-opentype'),
+  url('/fonts/Roboto/Roboto Light.woff2') format('woff2'),
+  url('/fonts/Roboto/Roboto Light.woff') format('woff'),
+  url('/fonts/Roboto/Roboto Light.ttf') format('truetype'),
+  url('/fonts/Roboto/Roboto Light.svg#Roboto Light') format('svg');
+  font-weight: 300;
+  font-style: normal;
+  font-stretch: normal;
+  unicode-range: U+0020-2044;
+}
+
+@font-face {
+  font-family:'Roboto Medium';
+  src: url('/fonts/Roboto/Roboto Medium.eot');
+  src: url('/fonts/Roboto/Roboto Medium.eot?#iefix') format('embedded-opentype'),
+  url('/fonts/Roboto/Roboto Medium.woff2') format('woff2'),
+  url('/fonts/Roboto/Roboto Medium.woff') format('woff'),
+  url('/fonts/Roboto/Roboto Medium.ttf') format('truetype'),
+  url('/fonts/Roboto/Roboto Medium.svg#Roboto Medium') format('svg');
+  font-weight: 500;
+  font-style: normal;
+  font-stretch: normal;
+  unicode-range: U+0020-2044;
+}
+
+@font-face {
+  font-family: 'Roboto Mono Medium';
+  src: url('/fonts/Roboto/Mono/robotomono-medium-webfont.eot');
+  src: url('/fonts/Roboto/Mono/robotomono-medium-webfont.eot?#iefix') format('embedded-opentype'),
+  url('/fonts/Roboto/Mono/robotomono-medium-webfont.woff2') format('woff2'),
+  url('/fonts/Roboto/Mono/robotomono-medium-webfont.woff') format('woff'),
+  url('/fonts/Roboto/Mono/robotomono-medium-webfont.ttf') format('truetype'),
+  url('/fonts/Roboto/Mono/robotomono-medium-webfont.svg#roboto_monomedium') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}

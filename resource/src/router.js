@@ -13,6 +13,11 @@ const routes = [
     component: HomePage
   },
   {
+    path: '/contact/create',
+    name: 'contact-create',
+    component: ContactPage
+  },
+  {
     path: '/contact/:id(\\d+)',
     name: 'contact',
     component: ContactPage

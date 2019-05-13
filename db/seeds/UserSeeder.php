@@ -21,6 +21,7 @@ class UserSeeder extends AbstractSeed
             $data[] = [
                 'first_name'    => $faker->firstName,
                 'last_name'     => $faker->lastName,
+                'comment'       => $faker->paragraph,
             ];
         }
 

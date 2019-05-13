@@ -2,7 +2,6 @@
     <b-container class="bv-example-row">
         <b-row>
             <b-col>
-
                 <div>
                     <b-jumbotron bg-variant="info" text-variant="white" border-variant="dark">
                         <template slot="header">Contacts list</template>
@@ -27,7 +26,14 @@
                             </b-form>
                         </div>
                     </b-jumbotron>
-                    {{ search }}
+
+                    <b-row align="start">
+                        <b-col>
+                            <router-link :to="{ name: 'contact-create'}" class="btn btn-info float-left add-contact">
+                                Добавить контакт
+                            </router-link>
+                        </b-col>
+                    </b-row>
                 </div>
             </b-col>
         </b-row>
@@ -38,9 +44,9 @@
         </b-row>
         <b-row align="start">
             <b-col>
-                <b-button size="md" class="mr-1" variant="success">
+                <router-link :to="{ name: 'contact-create'}" class="btn btn-info float-left add-contact">
                     Добавить контакт
-                </b-button>
+                </router-link>
             </b-col>
         </b-row>
     </b-container>

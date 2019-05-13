@@ -4,7 +4,17 @@ import App from './App.vue'
 import axios from 'axios'
 
 import router from './router';
-import styles from './assets/styles.scss';
+import './assets/styles.scss';
+
+import { library } from '@fortawesome/fontawesome-svg-core';
+import { faTrash } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
+
+import VueTheMask from 'vue-the-mask'
+
+library.add(faTrash);
+
+Vue.component('font-awesome-icon', FontAwesomeIcon);
 
 Vue.config.productionTip = false;
 
@@ -13,7 +23,8 @@ Vue.use({
     Vue.prototype.$api = axios.create({
       baseURL: 'http://localhost:8089/'
     })
-  }
+  },
+  VueTheMask
 });
 
 new Vue({
