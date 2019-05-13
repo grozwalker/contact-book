@@ -10,7 +10,7 @@ import { library } from '@fortawesome/fontawesome-svg-core';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 
-import VueTheMask from 'vue-the-mask'
+import Notifications from 'vue-notification';
 
 library.add(faTrash);
 
@@ -23,9 +23,10 @@ Vue.use({
     Vue.prototype.$api = axios.create({
       baseURL: 'http://localhost:8089/'
     })
-  },
-  VueTheMask
+  }
 });
+
+Vue.use(Notifications);
 
 new Vue({
   router,

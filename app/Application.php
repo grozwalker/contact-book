@@ -40,5 +40,4 @@ class Application implements MiddlewareInterface, RequestHandlerInterface
         return ($this->pipeline)($request, $this->default);
     }
 
-
 }

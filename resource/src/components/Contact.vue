@@ -94,6 +94,12 @@
         return this.$api.post('contact', data).then(
           response => {
             this.contact = response.data;
+
+            this.$notify({
+              group: 'main',
+              type: 'success',
+              title: `Контакт успешно сохранен`
+            });
           },
           error => {
             console.error(error);
@@ -102,10 +108,15 @@
           });
       },
       updateUser(data) {
-        console.log('update method')
         return this.$api.put(`contact/${this.$route.params.id}`, data).then(
           response => {
             this.contact = response.data;
+
+            this.$notify({
+              group: 'main',
+              type: 'success',
+              title: `Контакт успешно сохранен`
+            });
           },
           error => {
             console.error(error);

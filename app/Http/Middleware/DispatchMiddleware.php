@@ -2,15 +2,11 @@
 
 namespace App\Http\Middleware;
 
-use App\Container\Container;
 use App\Http\Pipeline\Resolver;
-use App\Http\Router\Exceptions\RequestNotMatchedException;
 use App\Http\Router\Result;
 use App\Http\Router\Router;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use Psr\Http\Server\MiddlewareInterface;
-use Psr\Http\Server\RequestHandlerInterface;
 
 class DispatchMiddleware
 {

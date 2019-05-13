@@ -3,32 +3,26 @@
 namespace App\Http\Controllers;
 
 use App\Repositories\UserRepository;
-use App\Services\SaveUserPhoneService;
 use Psr\Http\Message\ServerRequestInterface;
 use Zend\Diactoros\Response\JsonResponse;
 
 class UserController
 {
     private $userRepository;
-    /**
-     * @var SaveUserPhoneService
-     */
-    private $saveUserPhoneService;
 
     public function __construct(UserRepository $userRepository)
     {
         $this->userRepository = $userRepository;
-        $this->saveUserPhoneService = $saveUserPhoneService;
     }
 
-    public function index(ServerRequestInterface $request)
+    public function index(ServerRequestInterface $request): JsonResponse
     {
         $users = $this->userRepository->fetchAll();
 
         return new JsonResponse($users);
     }
 
-    public function show(ServerRequestInterface $request)
+    public function show(ServerRequestInterface $request): JsonResponse
     {
         $id = $request->getAttribute('id');
         $user = $this->userRepository->fetch($id);
@@ -36,7 +30,7 @@ class UserController
         return new JsonResponse($user);
     }
 
-    public function store(ServerRequestInterface $request)
+    public function store(ServerRequestInterface $request): JsonResponse
     {
         $data = $request->getParsedBody();
         $user = $this->userRepository->create($data);
@@ -44,12 +38,7 @@ class UserController
         return new JsonResponse($user);
     }
 
-    public function edit()
-    {
-
-    }
-
-    public function update(ServerRequestInterface $request)
+    public function update(ServerRequestInterface $request): JsonResponse
     {
         $id = $request->getAttribute('id');
         $data = $request->getParsedBody();
@@ -59,10 +48,11 @@ class UserController
         return new JsonResponse($user);
     }
 
-    public function destroy(ServerRequestInterface $request)
+    public function destroy(ServerRequestInterface $request): JsonResponse
     {
         $id = $request->getAttribute('id');
         $this->userRepository->delete($id);
+
         return new JsonResponse('', 200);
     }
 }

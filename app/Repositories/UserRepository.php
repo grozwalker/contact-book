@@ -19,7 +19,7 @@ class UserRepository
 {
     public function fetchAll(): array
     {
-        return User::with('phones')->orderByDesc('id')->get()->toArray();
+        return User::with('phones')->orderBy('first_name')->orderBy( 'last_name')->get()->toArray();
     }
 
     public function fetch(int $id): array

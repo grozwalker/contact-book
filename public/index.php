@@ -9,6 +9,12 @@ use \Zend\Diactoros\ServerRequestFactory;
 chdir(dirname(__DIR__));
 require 'vendor/autoload.php';
 
+//TODO Надо было бы убрать тоже это в контейнер.
+/*
+ * Хотел вместо illuminate/database использовать doctrine
+ * Но он, конечно, гораздо сложнее и плюс бы еще пришлось переписывать миграции
+ * Поэтому оставил эту затею
+ */
 $db = new Database();
 
 $container = require 'config/container.php';
@@ -35,4 +41,5 @@ $emitter->emit($response);
 //TODO
 /*
  * Implement MiddlewareInterface
+ * Create request validation
  */

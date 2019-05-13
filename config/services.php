@@ -7,8 +7,12 @@ use App\Http\Middleware\NotFoundHandler;
 use App\Http\Pipeline\Resolver;
 use App\Http\Router\Router;
 use App\Http\Router\RouterCollection;
-use ContainerInteropDoctrine\EntityManagerFactory;
 
+//TODO
+/*
+ * Не очень красиво сделал работу с БД и не вынес все в один конфиг,
+ * который был бы не под гитом для локальной разработки
+ */
 return [
     Application::class => function (Container $container) {
         return new Application(
@@ -42,8 +46,5 @@ return [
     },
     Resolver::class => function (Container $container) {
         return new Resolver($container);
-    },
-    'doctrine.entity_manager.orm_default' => function (Container $container) {
-        return new EntityManagerFactory();
     },
 ];
