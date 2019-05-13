@@ -1,4 +1,5 @@
 module.exports = {
+  outputDir: 'resource/dist',
   lintOnSave: true,
   configureWebpack: {
     resolve: {
