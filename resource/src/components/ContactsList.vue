@@ -1,22 +1,49 @@
 <template>
     <div>
-        <b-table
-                hover
-                :fields="fields"
-                :items="contacts"
-                :filter="searchValue"
-        >
-            <template slot="actions" slot-scope="row">
-                <b-button size="sm" class="mr-1" variant="primary">
-                    <router-link style="color: white; " :to="{ name: 'contact', params: {id: row.item.id } }">Редактировать</router-link>
+        <table class="table contacts">
+            <thead>
+                <tr>
+                    <td>ID</td>
+                    <td>Имя</td>
+                    <td>Фамилия</td>
+                    <td>Телефоны</td>
+                    <td></td>
+                </tr>
+            </thead>
+            <tbody>
+                <tr v-for="contact in contacts">
+                    <td>{{ contact.id}}</td>
+                    <td>{{ contact.first_name}}</td>
+                    <td>{{ contact.last_name}}</td>
+                    <td>
+                        <ul class="contact-phones">
+                            <li v-for="phone in contact.phones">{{ phone.phone}}</li>
+                        </ul>
 
-                </b-button>
-                <b-button size="sm" variant="danger">
-                    Удалить
-                </b-button>
-            </template>
+                        <b-button size="md" variant="success" v-b-modal.addPhone>
+                            Добавить номер
+                        </b-button>
+                    </td>
+                    <td>
+                        <b-button size="sm" class="mr-1" variant="primary">
+                            <router-link style="color: white; " :to="{ name: 'contact', params: {id: contact.id } }">Редактировать</router-link>
+                        </b-button>
+                        <b-button size="sm" variant="danger" @click="deleteItems(contact.id)">
+                            Удалить
+                        </b-button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <b-modal id="addPhone" title="Добавление номера">
 
-        </b-table>
+            <b-input
+                    v-model="phoneNumber"
+                    id="inline-form-input-name"
+                    class="mb-2 mr-sm-2 mb-sm-0"
+                    placeholder="+7(918) 123-45-56"
+            ></b-input>
+        </b-modal>
     </div>
 </template>
 
@@ -31,27 +58,36 @@
     data() {
       return {
         searchString: '',
-        contacts: [
-          { id: 40, first_name: 'Dickerson', last_name: 'Macdonald' },
-          { id: 21, first_name: 'Larsen', last_name: 'Shaw' },
-          { id: 89, first_name: 'Geneva', last_name: 'Wilson' },
-          { id: 38, first_name: 'Jami', last_name: 'Carney' }
-        ],
-        fields: [
-          { key: 'id', label: 'Id', sortable: true, sortDirection: 'desc' },
-          { key: 'first_name', label: 'First Name', sortable: true },
-          { key: 'last_name', label: 'Last Name', sortable: true },
-          { key: 'actions', label: 'Actions' }
-        ],
+        phoneNumber: null,
+        contacts: [],
+        inProcess: false,
       }
-    }
-/*    computed: {
-      filteredList() {
-        return this.contacts.filter(contact => {
-          return contact.first_name.toLowerCase().includes(this.searchValue.toLowerCase())
+    },
+    created() {
+        this.$api.get('contact').then(response => {
+            console.log('created', response);
+            this.contacts = response.data;
         })
-      }
-    }*/
+    },
+    methods: {
+        deleteItems($id) {
+            if (this.inProcess) return;
+
+            this.inProcess = true;
+
+            this.$api.delete('contact/' + $id).then(response => {
+                console.log('created', response);
+                this.contacts = this.removeFromArray(this.contacts, $id);
+                this.inProcess = false;
+            })
+        },
+        addPhone($id) {
+
+        },
+        removeFromArray(array, id) {
+            return array.filter(el => el.id !== id);
+        }
+    }
   }
 </script>
 

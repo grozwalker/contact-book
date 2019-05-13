@@ -9,5 +9,8 @@ module.exports = {
     entry: {
       app: './resource/src/main.js'
     }
+  },
+  devServer: {
+    public: '0.0.0.0:8089'
   }
 };

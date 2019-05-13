@@ -2,9 +2,12 @@ version: '3'
 
 services:
   db:
-    image: mysql:8
-    command: mysqld --default-authentication-plugin=mysql_native_password
+    build:
+      context: ./
+      dockerfile: docker/dev/db.Dockerfile
+    image: spa_db
     container_name: spa_db_1
+    command: mysqld --default-authentication-plugin=mysql_native_password
     environment:
       MYSQL_DATABASE: docker
       MYSQL_USER: docker
@@ -40,6 +43,21 @@ services:
     environment:
       XDEBUG_CONFIG: "remote_host=192.168.220.1 remote_enable=1"
       PHP_IDE_CONFIG: "serverName=Docker"
+    networks:
+      - spa-network
+
+  node:
+    build:
+      context: ./
+      dockerfile: docker/dev/node.Dockerfile
+    image: spa_node
+    container_name: spa_node_1
+    tty: true
+    ports:
+      - "3000:8080"
+      - "35729:35729"
+    volumes:
+      - ./:/var/www
     networks:
       - spa-network
 

@@ -4,13 +4,13 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class User extends Model
+class Phone extends Model
 {
     protected $guarded = ['id'];
 
-    public function phones()
+    public function user()
     {
-        return $this->hasMany(Phone::class);
+        return $this->belongsTo(User::class);
     }
 
 }

@@ -56,6 +56,6 @@ class ContactController
     {
         $id = $request->getAttribute('id');
         $this->userRepository->delete($id);
-        return new JsonResponse("Пользователь #${id} успешно удален");
+        return new JsonResponse('', 200);
     }
 }

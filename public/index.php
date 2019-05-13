@@ -9,7 +9,6 @@ use \Zend\Diactoros\ServerRequestFactory;
 chdir(dirname(__DIR__));
 require 'vendor/autoload.php';
 
-
 $db = new Database();
 
 $container = require 'config/container.php';

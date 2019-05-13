@@ -4,7 +4,6 @@ SHELL=/bin/bash -e
 project_name=spa
 
 
-
 fresh-install: install clear-folder
 
 prepare-db: phinx-env migrate seed

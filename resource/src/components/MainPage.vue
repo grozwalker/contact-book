@@ -33,7 +33,7 @@
         </b-row>
         <b-row>
             <b-col>
-                <ContactsList :searchValue=search />
+                <ContactsList :searchValue="search" />
             </b-col>
         </b-row>
         <b-row align="start">
@@ -62,6 +62,11 @@
     components: {
       ContactsList
     },
+    data() {
+        return {
+            search: ''
+        }
+    }
   }
 </script>
 
