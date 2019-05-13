@@ -6,7 +6,7 @@
 
 ## Project setup with `make`
 ```
-git clone git@bitbucket.org:Grozwalker/prof-spa.git
+git clone git@github.com:grozwalker/contact-book.git
 make project-install
 ```
 Visit: http://localhost:8081
