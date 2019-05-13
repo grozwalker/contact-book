@@ -3,16 +3,11 @@ SHELL=/bin/bash -e
 #VARIABLES#
 project_name=spa
 
+project-install: up composer-install prepare-db npm-i build-front complete
 
 fresh-install: install clear-folder
 
 prepare-db: phinx-env migrate seed
-
-prepare-app: composer-install env key-generate
-
-build-front: npm-i build-grunt copy-front
-
-build-front-fast: npm-i build-grunt copy-front
 
 install:
 	@docker exec -it ${project_name}_app_1  sh -c "composer create-project --prefer-dist laravel/laravel ./laravel"
@@ -56,11 +51,14 @@ phinx-env:
 npm-i:
 	@docker exec -it ${project_name}_node_1 sh -c "npm i"
 
-build-grunt:
-	@docker exec -it ${project_name}_node_1 sh -c "grunt build-fast"
+build-front:
+	@docker exec -it ${project_name}_node_1 sh -c "npm run build"
 
-copy-front:
-	@cp -r ./markup/build/res ./php/public
+develop-front:
+	@docker exec -it ${project_name}_node_1 sh -c "npm run serve"
+
+complete:
+	@echo -e "Completed! Visit http://localhost:8081"
 
 bash:
 	docker exec -it ${project_name}_app_1 bash

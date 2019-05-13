@@ -28,7 +28,7 @@ RUN docker-php-ext-install \
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin/ --filename=composer
 WORKDIR /var/www
 
-ADD config/php.ini /usr/local/etc/php/php.ini
+COPY config/php.ini /usr/local/etc/php/php.ini
 
 RUN adduser --disabled-password --gecos "" docker-user && \
   echo "docker-user ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers

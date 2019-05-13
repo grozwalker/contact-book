@@ -1,29 +1,18 @@
-# resource
+# Installation
 
-## Project setup
-```
-npm install
-```
+**Requirements:**
+* Docker
+* Docker-compose (syntax v3)
 
-### Compiles and hot-reloads for development
+## Project setup with `make`
 ```
-npm run serve
+git clone git@bitbucket.org:Grozwalker/prof-spa.git
+make project-install
 ```
+Visit: http://localhost:8081
 
-### Compiles and minifies for production
+### Fronted development work
 ```
-npm run build
+make develop-front
 ```
-
-### Run your tests
-```
-npm run test
-```
-
-### Lints and fixes files
-```
-npm run lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+Visit: http://localhost:3000

@@ -1,7 +1,5 @@
-FROM node:10
+FROM node:10-alpine
 
-RUN npm install -g bower
-RUN npm install --global gulp-cli grunt-cli @vue/cli && npm install gulp grunt
-RUN echo '{ "allow_root": true }' > /root/.bowerrc
+RUN npm install --global gulp-cli @vue/cli
 
 WORKDIR /var/www/
