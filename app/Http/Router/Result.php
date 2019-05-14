@@ -2,6 +2,11 @@
 
 namespace App\Http\Router;
 
+/**
+ * Возвращаемый найденный роут
+ * Class Result
+ * @package App\Http\Router
+ */
 class Result
 {
     protected $name;

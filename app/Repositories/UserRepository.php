@@ -15,6 +15,10 @@ use App\Models\User;
  * Но решил показать, что знаю, что есть такой паттерн. Возможно зря
  */
 
+/**
+ * Class UserRepository
+ * @package App\Repositories
+ */
 class UserRepository
 {
     public function fetchAll(): array

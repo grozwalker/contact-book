@@ -6,6 +6,11 @@ use Psr\Http\Message\ServerRequestInterface;
 use Throwable;
 use Zend\Diactoros\Response\JsonResponse;
 
+/**
+ * Оборачиваем цепочку вызовов в try/catch, чтобы обрабатывать возможные ошибки
+ * Class ErrorHandlerMiddleware
+ * @package App\Http\Middleware
+ */
 class ErrorHandlerMiddleware
 {
     protected $debug;

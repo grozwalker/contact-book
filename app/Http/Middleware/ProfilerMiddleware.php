@@ -5,6 +5,11 @@ namespace App\Http\Middleware;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
+/**
+ * Засекает время отработки скрипта
+ * Class ProfilerMiddleware
+ * @package App\Http\Middleware
+ */
 class ProfilerMiddleware
 {
     public function __invoke(ServerRequestInterface $request, callable $next)

@@ -5,6 +5,11 @@ namespace App\Http\Pipeline;
 use App\Container\ContainerInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
+/**
+ * Возвращаем анонимную ф-цию обработчик реквеста
+ * Class Resolver
+ * @package App\Http\Pipeline
+ */
 class Resolver
 {
     private $container;
@@ -44,6 +49,5 @@ class Resolver
         }
 
         return $handler;
-
     }
 }

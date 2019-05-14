@@ -8,6 +8,11 @@ use App\Http\Router\Router;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
+/**
+ * Получаем метод обработки и вызываем его
+ * Class DispatchMiddleware
+ * @package App\Http\Middleware
+ */
 class DispatchMiddleware
 {
     private $router;
@@ -21,6 +26,9 @@ class DispatchMiddleware
 
     public function __invoke(ServerRequestInterface $request, callable $handler): ResponseInterface
     {
+        /**
+         * Если результата нет, то сразу вызываем ф-цию по-умолчанию (NotFoundHandler)
+         */
         if (!$result = $request->getAttribute(Result::class)) {
             return $handler($request);
         }

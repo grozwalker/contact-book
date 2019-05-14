@@ -4,6 +4,11 @@ namespace App\Http\Middleware;
 
 use Psr\Http\Message\ServerRequestInterface;
 
+/**
+ * Парсим request и помещаем распарсенный массив данных в parsedBody
+ * Class BodyParamsMiddleware
+ * @package App\Http\Middleware
+ */
 class BodyParamsMiddleware
 {
     public function __invoke(ServerRequestInterface $request, callable $next)

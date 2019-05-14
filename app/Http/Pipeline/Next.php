@@ -5,6 +5,10 @@ namespace App\Http\Pipeline;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
+/**
+ * Class Next
+ * @package App\Http\Pipeline
+ */
 class Next
 {
     protected $queue;
@@ -23,8 +27,10 @@ class Next
         }
 
         $current = $this->queue->dequeue();
-        //dd($this->queue);
 
+        /**
+         * Формируем цепочку вызовов вложенных друг в друга
+         */
         return $current($request, function ($request) {
             return $this->handle($request);
         });

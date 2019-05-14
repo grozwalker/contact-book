@@ -5,6 +5,11 @@ namespace App\Http\Pipeline;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
+/**
+ * Очередь из middlewar'ов обрабатывается поштучно
+ * Class Pipeline
+ * @package App\Http\Pipeline
+ */
 class Pipeline
 {
     protected $queue;

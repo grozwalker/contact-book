@@ -6,6 +6,11 @@ use App\Http\Router\Exceptions\RequestNotMatchedException;
 use App\Http\Router\Exceptions\RouteNotFountException;
 use Psr\Http\Message\ServerRequestInterface;
 
+/**
+ * В коллекции (массиве) роутов находим соответствие и возвращаем
+ * Class Router
+ * @package App\Http\Router
+ */
 class Router implements RoutesInterface
 {
     private $routes;

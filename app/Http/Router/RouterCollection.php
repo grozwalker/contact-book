@@ -4,6 +4,11 @@ namespace App\Http\Router;
 
 use App\Http\Router\Route\RegexpRoute;
 
+/**
+ * Заполняем коллецию роутов
+ * Class RouterCollection
+ * @package App\Http\Router
+ */
 class RouterCollection
 {
     private $routes = [];

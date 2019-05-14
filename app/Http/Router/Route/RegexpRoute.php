@@ -6,6 +6,12 @@ use App\Http\Router\Result;
 use Psr\Http\Message\ServerRequestInterface;
 
 //TODO заменить на Symfony || Zend router
+
+/**
+ * Роутер на регулярных выражениях. Инкапусляции логика поиска
+ * Class RegexpRoute
+ * @package App\Http\Router\Route
+ */
 class RegexpRoute implements Route
 {
     public $name;
@@ -29,8 +35,16 @@ class RegexpRoute implements Route
         $this->tokens = $tokens;
     }
 
+    /**
+     * Находим соответствие по регулярным выражениям и параметр
+     * @param ServerRequestInterface $request
+     * @return Result|null
+     */
     public function match(ServerRequestInterface $request): ?Result
     {
+        /**
+         * Если даже метода нет, то дальше не идем
+         */
         if($this->methods && !in_array($request->getMethod(), $this->methods, true)) {
             return null;
         }
@@ -43,6 +57,10 @@ class RegexpRoute implements Route
             return '(?P<' . $argument . '>' . $replace . ')';
         }, $this->pattern);
 
+        /**
+         * Если нашли нужные роут возвращаем результат.
+         * Новый объект для лучше реализации ООП
+         */
         if (preg_match('~^' . $pattern . '$~i', $request->getUri()->getPath(), $matches)) {
             return new Result(
                 $this->name,
@@ -54,6 +72,12 @@ class RegexpRoute implements Route
         return null;
     }
 
+    /**
+     * Генерируем урл по имени
+     * @param $name
+     * @param array $params
+     * @return string|null
+     */
     public function generate($name, $params = []): ?string
     {
         if ($name !== $this->name) {
