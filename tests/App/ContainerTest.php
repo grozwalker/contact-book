@@ -12,49 +12,57 @@ class ContainerTest extends TestCase
     /** @test */
     public function can_add_params()
     {
-        $container = new Container();
+        $config = [
+            'value1' => 5,
+            'value2' => 'string',
+            'value3' => ['5' => 'test'],
+            'value4' => new \stdClass(),
+        ];
 
-        $container->set($key = 'value', $value = 5);
-        $this::assertEquals($value, $container->get($key));
+        $container = new Container([
+            'value1' => 5,
+            'value2' => 'string',
+            'value3' => ['5' => 'test'],
+            'value4' => new \stdClass(),
+        ]);
 
-        $container->set($key = 'value', $value = 'string');
-        $this::assertEquals($value, $container->get($key));
+        $this::assertEquals($config['value1'], $container->get('value1'));
 
-        $container->set($key = 'value', $value = ['5' => 'test']);
-        $this::assertEquals($value, $container->get($key));
+        $this::assertEquals($config['value2'], $container->get('value2'));
 
-        $container->set($key = 'value', $value = new \stdClass());
-        $this::assertEquals($value, $container->get($key));
+        $this::assertEquals($config['value3'], $container->get('value3'));
+
+        $this::assertEquals($config['value4'], $container->get('value4'));
     }
 
     /** @test */
     public function callback_not_running()
     {
-        $container = new Container();
+        $container = new Container([
+            'value' => function () {
+                return new \stdClass();
+            }
+        ]);
 
-        $container->set($key = 'value', function () {
-            return new \stdClass();
-        });
-
-        $this::assertNotNull($container->get($key));
-        $this->assertInstanceOf(\stdClass::class, $container->get($key));
+        $this::assertNotNull($container->get('value'));
+        $this->assertInstanceOf(\stdClass::class, $container->get('value'));
 
     }
 
     /** @test */
     public function pass_myself_as_params()
     {
-        $container = new Container();
+        $container = new Container([
+            'param' => 5,
+            'value' => function (Container $container) {
+                $object = new \stdClass();
+                $object->param = $container->get('param');
+                return $object;
+            }
+        ]);
 
-        $container->set('param', $param = 5);
-        $container->set($key = 'value', function (Container $container) {
-            $object = new \stdClass();
-            $object->param = $container->get('param');
-            return $object;
-        });
-
-        $this::assertObjectHasAttribute('param', $object = $container->get($key));
-        $this::assertEquals($param, $object->param);
+        $this::assertObjectHasAttribute('param', $object = $container->get('value'));
+        $this::assertEquals(5, $object->param);
 
     }
 
@@ -76,14 +84,14 @@ class ContainerTest extends TestCase
     /** @test */
     public function can_cache_keys()
     {
-        $container = new Container();
+        $container = new Container([
+            'value' => function () {
+                return new \stdClass();
+            }
+        ]);
 
-        $container->set($key = 'value', function () {
-            return new \stdClass();
-        });
-
-        $this::assertNotNull($value1 = $container->get($key));
-        $this::assertNotNull($value2 = $container->get($key));
+        $this::assertNotNull($value1 = $container->get('value'));
+        $this::assertNotNull($value2 = $container->get('value'));
 
         $this::assertSame($value1, $value2);
 
@@ -110,9 +118,9 @@ class ContainerTest extends TestCase
     /** @test */
     public function exception_when_params_not_found()
     {
-        $container = new Container();
-
-        $container->set('value', $value = 5);
+        $container = new Container([
+            'value' => 5
+        ]);
 
         $this::expectException(KeyNotFoundException::class);
         $container->get('error name');
